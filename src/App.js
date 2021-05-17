@@ -1,24 +1,44 @@
-import logo from './logo.svg';
-import './App.css';
+import { Router, Route, Switch, Redirect } from 'react-router-dom';
+import { createHashHistory } from 'history';
+import Login from './Login'
+import Full from './Full'
+import Restricted from './Restricted'
+const history = createHashHistory()
 
 function App() {
+
+  console.log('zzz')
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+
+    <Router history={history}>
+      <Switch>
+        <Route path="/login" render={() => <Login history={history} />} />
+        <Route path="/Full" render={
+          () => {
+            if (!sessionStorage.getItem("key")) {
+              return <Restricted history={history}></Restricted>
+            }
+            else {
+              return <Full>
+
+              </Full>
+            }
+
+          }} />
+        <Route path="/">
+          <Redirect to="login" ></Redirect>
+        </Route>
+
+
+
+
+
+
+      </Switch>
+
+    </Router>
+
+
   );
 }
 
